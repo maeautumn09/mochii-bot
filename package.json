@@ -1,15 +1,17 @@
 {
   "name": "mochii-bot",
   "version": "1.0.0",
-  "description": "Mochii Discord economy, fun, and embed bot powered by Node.js and SQLite",
+  "description": "Mochii Discord economy, fun, moderation, ticket, and welcome bot powered by Node.js and SQLite",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "node --watch index.js"
+    "dev": "node --watch index.js",
+    "dashboard": "node dashboard/server.js"
   },
   "dependencies": {
     "better-sqlite3": "^11.1.2",
     "discord.js": "^14.16.0",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2"
   }
 }

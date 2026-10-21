@@ -1,57 +1,91 @@
-require("dotenv").config();
+# Mochii Bot
 
-const { Client, GatewayIntentBits, Collection, Events } = require("discord.js");
-const fs = require("node:fs");
-const path = require("node:path");
+A cozy Discord economy and fun bot built with Node.js, SQLite, and Discord.js.
 
-const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent,
-  ],
-});
+## Features
 
-client.commands = new Collection();
+- Mochi Stars economy system
+- Daily and work rewards
+- Balance, shop, shop buys, inventory, and leaderboard
+- Welcome system
+- Moderation tools
+- Ticket system
+- Auto-responders
+- Saved embedded templates and multi-embed support
+- Webhook helper
+- Taro & Sky color palette
 
-const commandsPath = path.join(__dirname, "commands");
-const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith(".js"));
+## Quick start
 
-for (const file of commandFiles) {
-  const filePath = path.join(commandsPath, file);
-  const command = require(filePath);
-  if ("data" in command && "execute" in command) {
-    client.commands.set(command.data.name, command);
-  }
-}
+1. Install dependencies:
 
-client.once(Events.ClientReady, () => {
-  console.log(`Mochii is online as ${client.user.tag}`);
-  client.user.setActivity("Mochi Stars & cozy vibes", { type: "WATCHING" });
-});
+```bash
+npm install
+```
 
-client.on(Events.InteractionCreate, async (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
+2. Copy `.env.example` to `.env` and add your Discord bot token:
 
-  const command = client.commands.get(interaction.commandName);
-  if (!command) return;
+```bash
+cp .env.example .env
+```
 
-  try {
-    await command.execute(interaction);
-  } catch (error) {
-    console.error(error);
+```env
+DISCORD_TOKEN=your_discord_bot_token_here
+BOT_PREFIX=!
+```
 
-    const payload = {
-      content: "There was an error while executing this command.",
-      ephemeral: true,
-    };
+3. Start the bot:
 
-    if (interaction.replied || interaction.deferred) {
-      await interaction.followUp(payload);
-    } else {
-      await interaction.reply(payload);
-    }
-  }
-});
+```bash
+npm start
+```
 
-client.login(process.env.DISCORD_TOKEN);
+4. Start the dashboard (optional):
+
+```bash
+npm run dashboard
+```
+
+## Main commands
+
+- `/daily`
+- `/work`
+- `/balance`
+- `/shop`
+- `/buy <item>`
+- `/inventory`
+- `/leaderboard`
+- `/profile`
+- `/coinflip`
+- `/dice`
+- `/embed-save`
+- `/embed-list`
+- `/embed-send`
+- `/multi-embed`
+- `/welcome`
+- `/ticket create`
+- `/ticket close`
+- `/ticket list`
+- `/warn`
+- `/mute`
+- `/unmute`
+- `/kick`
+- `/ban`
+- `/autoresponder add`
+- `/autoresponder list`
+- `/autoresponder remove`
+
+## Dashboard
+
+The dashboard is a basic Express app for simple admin checks. It is optional and reads the same SQLite database.
+
+## Taro & Sky palette
+
+- Primary purple: `#C7CEEA`
+- Secondary light blue: `#B5D8EB`
+- Highlight soft blue: `#E0F7FA`
+- Dark neutral: `#3B3852`
+
+## Notes
+
+This project is designed to be a strong starter bot and includes a clean basis for future expansion into more advanced moderation, admin tools, and automation.
